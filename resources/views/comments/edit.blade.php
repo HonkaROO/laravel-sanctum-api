@@ -6,18 +6,21 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card">
-            <div class="card-header">Edit Comment</div>
+            <div class="card-header">
+                Edit Comment
+            </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('comments.update', ['post' => $post->id, 'comment' => $comment->id]) }}">
+                <form action="{{ route('comments.update', ['post' => $comment->post_id, 'comment' => $comment->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="form-group">
                         <label for="body">Comment</label>
-                        <textarea class="form-control" id="body" name="body" rows="5" required>{{ $comment->body }}</textarea>
+                        <textarea name="body" id="body" class="form-control" rows="5" required>{{ old('body', $comment->body) }}</textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Update Comment</button>
+                    <a href="{{ route('comments.index', $comment->post_id) }}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>

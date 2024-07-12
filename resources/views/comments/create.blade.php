@@ -14,8 +14,9 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('comments.store') }}">
+                <form method="POST" action="{{ route('comments.store', ['post' => $post->id]) }}">
                     @csrf
+
                     <input type="hidden" name="post_id" value="{{ $post->id }}">
 
                     <div class="form-group">

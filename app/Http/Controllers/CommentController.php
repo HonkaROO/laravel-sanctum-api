@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-
     public function index(Post $post)
     {
         $comments = $post->comments()->get();
         return view('comments.index', compact('post', 'comments'));
     }
+
     public function create($postId)
     {
         $post = Post::findOrFail($postId);
@@ -29,7 +28,6 @@ class CommentController extends Controller
         ]);
 
         $data['user_id'] = auth()->user()->id;
-
         Comment::create($data);
 
         return redirect()->back()->with('success', 'Comment created successfully.');
@@ -38,20 +36,26 @@ class CommentController extends Controller
     public function show(Post $post)
     {
         $comments = $post->comments()->get();
-
         return view('comments.show', compact('post', 'comments'));
     }
+
     public function edit(Comment $comment)
     {
         return view('comments.edit', compact('comment'));
     }
+
     public function update(Request $request, Comment $comment)
     {
-        $comment->update($request->all());
+        $request->validate([
+            'body' => 'required|string',
+        ]);
+
+        $comment->update($request->only('body'));
 
         return redirect()->route('posts.index')
                          ->with('success', 'Comment updated successfully.');
     }
+
     public function destroy(Comment $comment)
     {
         $comment->delete();

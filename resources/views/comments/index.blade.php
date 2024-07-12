@@ -20,10 +20,10 @@
                                 <p>{{ $comment->body }}</p>
                                 <small>By: {{ $comment->user->name }}</small>
                                 <div class="mt-2">
-                                    @can('update-comment', $comment)
+                                    @can('update', $comment)
                                         <a href="{{ route('comments.edit', ['post' => $post->id, 'comment' => $comment->id]) }}" class="btn btn-primary btn-sm">Edit</a>
                                     @endcan
-                                    @can('delete-comment', $comment)
+                                    @can('delete', $comment)
                                         <form action="{{ route('comments.destroy', ['post' => $post->id, 'comment' => $comment->id]) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
