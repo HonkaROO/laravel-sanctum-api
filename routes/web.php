@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('comments', CommentController::class);
     Route::get('/posts/{post}/comments/create', [CommentController::class, 'create'])->name('comments.create');
     Route::get('/posts/{post}/comments', [CommentController::class, 'show'])->name('comments.show');
+    
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');

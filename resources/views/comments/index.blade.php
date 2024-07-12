@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Comments')
+@section('title', 'Comments for Post')
 
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span>Comments</span>
-                <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm">Go Back to Dashboard</a>
+                <span>Comments for Post: {{ $post->title }}</span>
+                <a href="{{ route('posts.index') }}" class="btn btn-secondary btn-sm">Go Back to Posts</a>
             </div>
             <div class="card-body">
                 @if ($comments->isEmpty())
@@ -17,24 +17,19 @@
                     <ul class="list-group">
                         @foreach ($comments as $comment)
                             <li class="list-group-item">
-                                <div>
-                                    <h5>{{ $comment->post->title }}</h5>
-                                    <p>{{ $comment->body }}</p>
-                                    <small>By: {{ $comment->user->name }}</small>
-                                </div>
-                                <div class="mt-3">
-                                    <!-- View Comment Button -->
-                                    <a href="{{ route('comments.show', $comment->id) }}" class="btn btn-info btn-sm ml-2">View</a>
-                                    
-                                    <!-- Edit Comment Button -->
-                                    <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-warning btn-sm ml-2">Edit</a>
-                                    
-                                    <!-- Delete Comment Form -->
-                                    <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm ml-2" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
-                                    </form>
+                                <p>{{ $comment->body }}</p>
+                                <small>By: {{ $comment->user->name }}</small>
+                                <div class="mt-2">
+                                    @can('update-comment', $comment)
+                                        <a href="{{ route('comments.edit', ['post' => $post->id, 'comment' => $comment->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    @endcan
+                                    @can('delete-comment', $comment)
+                                        <form action="{{ route('comments.destroy', ['post' => $post->id, 'comment' => $comment->id]) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
+                                        </form>
+                                    @endcan
                                 </div>
                             </li>
                         @endforeach

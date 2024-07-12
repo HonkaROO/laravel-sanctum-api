@@ -10,11 +10,10 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
 
-    public function index()
+    public function index(Post $post)
     {
-        $comments = Comment::all();
-
-        return view('comments.index', compact('comments'));
+        $comments = $post->comments()->get();
+        return view('comments.index', compact('post', 'comments'));
     }
     public function create($postId)
     {
@@ -24,18 +23,16 @@ class CommentController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'post_id' => 'required|exists:posts,id',
+        $data = $request->validate([
             'body' => 'required|string',
+            'post_id' => 'required|exists:posts,id',
         ]);
 
-        $comment = Comment::create([
-            'user_id' => auth()->id(),
-            'post_id' => $request->post_id,
-            'body' => $request->body,
-        ]);
+        $data['user_id'] = auth()->user()->id;
 
-        return redirect()->route('posts.index')->with('success', 'Comment added successfully.');
+        Comment::create($data);
+
+        return redirect()->back()->with('success', 'Comment created successfully.');
     }
 
     public function show(Post $post)

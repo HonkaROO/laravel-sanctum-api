@@ -19,6 +19,15 @@
                             <li class="list-group-item">
                                 <p>{{ $comment->body }}</p>
                                 <small>By: {{ $comment->user->name }}</small>
+                                <br>
+                                <div class="mt-2">
+                                    <a href="{{ route('comments.edit', ['post' => $post->id, 'comment' => $comment->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{ route('comments.destroy', ['post' => $post->id, 'comment' => $comment->id]) }}" method="POST" style="display: inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
+                                    </form>
+                                </div>
                             </li>
                         @endforeach
                     </ul>

@@ -24,6 +24,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <a href="{{ route('comments.create', $post->id) }}" class="btn btn-primary btn-sm ml-2">Create Comment</a>
+                                    <a href="{{ route('comments.index', $post->id) }}" class="btn btn-info btn-sm ml-2">View Comments</a>
                                     <span class="badge badge-info ml-2">{{ $post->comments->count() }} {{ Str::plural('comment', $post->comments->count()) }}</span>
                                 </div>
                             </li>

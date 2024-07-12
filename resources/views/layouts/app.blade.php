@@ -9,10 +9,28 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{{ route('dashboard') }}">Dashboard</a>
-            <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
-            </form>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                @auth
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </li>
+                @endauth
+                @guest
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">Register</a>
+                    </li>
+                @endguest
+            </ul>
         </div>
     </nav>
     <div class="container mt-4">
