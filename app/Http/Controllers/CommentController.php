@@ -46,7 +46,7 @@ class CommentController extends Controller
     return view('comments.edit', compact('post', 'comment'));
 }
 
-public function update(Request $request, Comment $comment)
+public function update(Request $request, Post $post, Comment $comment)
 {
     $request->validate([
         'body' => 'required|string',
@@ -56,9 +56,10 @@ public function update(Request $request, Comment $comment)
         'body' => $request->body,
     ]);
 
-    return redirect()->route('comments.index', ['post' => $comment->post_id])
+    return redirect()->route('comments.index', ['post' => $post->id])
                      ->with('success', 'Comment updated successfully.');
 }
+
 
 
     

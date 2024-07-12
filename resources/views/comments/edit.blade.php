@@ -10,7 +10,7 @@
                 Edit Comment
             </div>
             <div class="card-body">
-            <form action="{{ route('comments.update', ['post' => $comment->post_id, 'comment' => $comment->id]) }}" method="POST">
+            <form action="{{ route('comments.update', ['post' => $post->id, 'comment' => $comment->id]) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -20,8 +20,9 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Comment</button>
-                <a href="{{ route('comments.index', $comment->post_id) }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ route('comments.index', $post->id) }}" class="btn btn-secondary">Cancel</a>
             </form>
+
 
             </div>
         </div>

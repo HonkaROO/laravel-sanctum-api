@@ -40,27 +40,37 @@ class PostController extends Controller
         return $post->load('user', 'comments');
     }
 
-    public function update(Request $request, Post $post)
+    public function edit(Post $post)
     {
-
         $this->authorize('update', $post);
-
-        $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'body' => 'sometimes|string',
-        ]);
-
-        $post->update($request->only('title', 'body'));
-
-        return response()->json($post);
+        return view('posts.edit', compact('post'));
     }
-    
+
+    public function update(Request $request, Post $post)
+{
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'body' => 'required|string',
+    ]);
+
+
+    $post->update([
+        'title' => $request->title,
+        'body' => $request->body,
+    ]);
+
+    return redirect()->route('posts.index')
+                     ->with('success', 'Post updated successfully.');
+}
+
     public function destroy(Post $post)
     {
         $this->authorize('delete', $post);
-        
+
         $post->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('posts.index')
+                         ->with('success', 'Post deleted successfully.');
     }
 }

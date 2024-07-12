@@ -26,6 +26,10 @@
                                     <a href="{{ route('comments.create', $post->id) }}" class="btn btn-primary btn-sm ml-2">Create Comment</a>
                                     <a href="{{ route('comments.index', $post->id) }}" class="btn btn-info btn-sm ml-2">View Comments</a>
                                     <span class="badge badge-info ml-2">{{ $post->comments->count() }} {{ Str::plural('comment', $post->comments->count()) }}</span>
+                                    
+                                    @can('update', $post)
+                                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm ml-2">Edit Post</a>
+                                    @endcan
                                 </div>
                             </li>
                         @endforeach
