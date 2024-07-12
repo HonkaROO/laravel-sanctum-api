@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Comment;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CommentPolicy
+class PostPolicy
 {
     use HandlesAuthorization;
     /**
@@ -21,7 +21,7 @@ class CommentPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Comment $comment)
+    public function view(User $user, Post $post)
     {
         //
     }
@@ -37,34 +37,33 @@ class CommentPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Comment $comment)
+    public function update(User $user, Post $post)
     {
         //
-        return $user->id === $comment->user_id;
+        return $user->id === $post->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Comment $comment)
+    public function delete(User $user, Post $post)
     {
         //
-        return $user->id === $comment->user_id;
+        return $user->id === $post->user_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Comment $comment)
+    public function restore(User $user, Post $post)
     {
         //
-        
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Comment $comment)
+    public function forceDelete(User $user, Post $post)
     {
         //
     }

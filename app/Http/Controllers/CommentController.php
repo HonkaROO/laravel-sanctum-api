@@ -30,7 +30,8 @@ class CommentController extends Controller
         $data['user_id'] = auth()->user()->id;
         Comment::create($data);
 
-        return redirect()->back()->with('success', 'Comment created successfully.');
+        return redirect()->route('comments.index', ['post' => $data['post_id']])
+                         ->with('success', 'Comment created successfully.');
     }
 
     public function show(Post $post)
@@ -39,25 +40,33 @@ class CommentController extends Controller
         return view('comments.show', compact('post', 'comments'));
     }
 
-    public function edit(Comment $comment)
+    public function edit(Post $post, Comment $comment)
+{
+    $this->authorize('update', $comment);
+    return view('comments.edit', compact('post', 'comment'));
+}
+
+public function update(Request $request, Comment $comment)
+{
+    $request->validate([
+        'body' => 'required|string',
+    ]);
+
+    $comment->update([
+        'body' => $request->body,
+    ]);
+
+    return redirect()->route('comments.index', ['post' => $comment->post_id])
+                     ->with('success', 'Comment updated successfully.');
+}
+
+
+    
+
+    public function destroy(Post $post, Comment $comment)
     {
-        return view('comments.edit', compact('comment'));
-    }
+        $this->authorize('delete', $comment); 
 
-    public function update(Request $request, Comment $comment)
-    {
-        $request->validate([
-            'body' => 'required|string',
-        ]);
-
-        $comment->update($request->only('body'));
-
-        return redirect()->route('posts.index')
-                         ->with('success', 'Comment updated successfully.');
-    }
-
-    public function destroy(Comment $comment)
-    {
         $comment->delete();
 
         return redirect()->route('posts.index')
